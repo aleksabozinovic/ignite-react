@@ -6,13 +6,26 @@ import { motion } from "framer-motion";
 
 // Redux
 import { useSelector } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
 const GameDetail = () => {
+  // Use History
+  const navigate = useNavigate();
+  // Exit Game
+  const exitDetailHandler = (e) => {
+    const element = e.target;
+
+    if ((element.classList = "shadow")) {
+      document.body.style = "auto";
+
+      navigate("/");
+    }
+  };
+
   // Data
   const { screen, game, isLoading } = useSelector((state) => state.detail);
 
   return (
-    <CardShadow className="card-shadow">
+    <CardShadow onClick={exitDetailHandler} className="card-shadow">
       <Detail className="detail">
         <Stats className="stats">
           <div className="rating">
