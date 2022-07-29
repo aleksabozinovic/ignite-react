@@ -10,7 +10,7 @@ import Game from "../components/Game";
 
 // Styling and Animation
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
 import { useLocation } from "react-router-dom";
 
@@ -18,18 +18,40 @@ const Home = () => {
   // Get current location
   const location = useLocation();
   const pathId = location.pathname.split("/")[2];
-  console.log(pathId);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadGames());
   }, [dispatch]);
   // Get that data back
-  const { popular, newGames, upcoming } = useSelector((state) => state.games);
+  const { popular, newGames, upcoming, searched } = useSelector(
+    (state) => state.games
+  );
 
   return (
     <GameList>
-      {pathId && <GameDetail />}
+      <AnimatePresence>
+        {pathId && <GameDetail pathId={pathId} />}
+      </AnimatePresence>
+      {searched.length ? (
+        <div className="searched">
+          <h2>Searched Games</h2>
+          <Games>
+            {searched.map((game) => (
+              <Game
+                name={game.name}
+                released={game.released}
+                id={game.id}
+                image={game.background_image}
+                key={game.id}
+              />
+            ))}
+          </Games>
+        </div>
+      ) : (
+        ""
+      )}
+
       <h2>Upcoming Games</h2>
       <Games>
         {upcoming.map((game) => (
